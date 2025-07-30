@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎁 Unlock Your Birthday Surprise</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    #indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      background-color: gray;
+      box-shadow: 0 0 10px #000;
+    }
+
+    #pinDisplay {
+      font-size: 28px;
+      letter-spacing: 10px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .key {
+      background: #1f1f1f;
+      color: white;
+      font-size: 22px;
+      padding: 18px;
+      border: 2px solid #444;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .key:hover {
+      background: #333;
+    }
+
+    #unlockButton {
+      display: none;
+      padding: 14px 24px;
+      font-size: 18px;
+      background: limegreen;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #unlockButton:hover {
+      background: green;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+    }
+
+    @media (max-width: 500px) {
+      .keypad {
+        grid-template-columns: repeat(3, 60px);
+        gap: 10px;
+      }
+      .key {
+        font-size: 20px;
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔒 Enter Your 8-Digit PIN</h2>
+  <div id="indicator"></div>
+  <div id="pinDisplay">________</div>
+
+  <div class="keypad">
+    <div class="key" onclick="pressKey(1)">1</div>
+    <div class="key" onclick="pressKey(2)">2</div>
+    <div class="key" onclick="pressKey(3)">3</div>
+    <div class="key" onclick="pressKey(4)">4</div>
+    <div class="key" onclick="pressKey(5)">5</div>
+    <div class="key" onclick="pressKey(6)">6</div>
+    <div class="key" onclick="pressKey(7)">7</div>
+    <div class="key" onclick="pressKey(8)">8</div>
+    <div class="key" onclick="pressKey(9)">9</div>
+    <div class="key" onclick="clearPin()">⟲</div>
+    <div class="key" onclick="pressKey(0)">0</div>
+    <div class="key" onclick="submitPin()">✓</div>
+  </div>
+
+  <button id="unlockButton" onclick="goToSurprise()">🎉 See Your Surprise</button>
+
+  <!-- Sound effects -->
+  <audio id="correctSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c342153d71.mp3?filename=correct-2-46134.mp3"></audio>
+  <audio id="wrongSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_783eeb9d80.mp3?filename=error-2-45865.mp3"></audio>
+
+  <script>
+    const correctPin = "31072006"; // Change to your 8-digit PIN
+    let enteredPin = "";
+
+    function updateDisplay() {
+      let masked = enteredPin.padEnd(8, '_');
+      document.getElementById("pinDisplay").innerText = masked;
+    }
+
+    function pressKey(num) {
+      if (enteredPin.length < 8) {
+        enteredPin += num;
+        updateDisplay();
+      }
+    }
+
+    function clearPin() {
+      enteredPin = "";
+      updateDisplay();
+      setIndicator("gray");
+    }
+
+    function submitPin() {
+      const correctSound = document.getElementById("correctSound");
+      const wrongSound = document.getElementById("wrongSound");
+
+      if (enteredPin === correctPin) {
+        setIndicator("lime");
+        document.getElementById("unlockButton").style.display = "block";
+        correctSound.play();
+      } else {
+        setIndicator("red");
+        shake();
+        wrongSound.play();
+        setTimeout(clearPin, 1000);
+      }
+    }
+
+    function setIndicator(color) {
+      document.getElementById("indicator").style.backgroundColor = color;
+    }
+
+    function shake() {
+      const body = document.body;
+      body.style.animation = "shake 0.3s";
+      setTimeout(() => body.style.animation = "", 300);
+    }
+
+    function goToSurprise() {
+      window.location.href = "https://www.google.com"; // Change this
+    }
+  </script>
+</body>
+</html>
